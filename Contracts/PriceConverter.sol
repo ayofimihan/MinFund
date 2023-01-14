@@ -1,0 +1,30 @@
+//SPDX-License-Identifier: MIT;
+pragma solidity ^0.8.7;
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+
+library PriceConverter{
+      function getPrice() internal view returns(uint256){
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e);
+       (,int price,,,)=priceFeed.latestRoundData();
+       //Eth in terms of USD
+       // convert this price 3000.00000000 to msg.value(1^18)
+       //also consider the decimal so multiply by 1e10
+       //also wrap in uint256 to typecast price cos price is int and msg.value is uint
+
+       return uint256(price * 1e10);
+
+
+    }
+
+    function getConversionRate(uint256 ethAmount) internal view returns(uint256){
+        uint256 ethPrice = getPrice();
+        uint ethAmountInUsd = (ethPrice * ethAmount) / 1e18;
+        return ethAmountInUsd;
+
+    }
+
+    function getVersion() internal view returns(uint256){
+        return AggregatorV3Interface(0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e).version();
+
+    }
+}
