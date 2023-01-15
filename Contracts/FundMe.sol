@@ -58,6 +58,8 @@ contract FundMe{
 
 
     }
+    
+    //fund function is added to both the receive and fallback functions so we can keep track of the funders incase the contract is sent eth directly without calling the fund function.
 
 
     receive()external payable{
